@@ -1,5 +1,7 @@
 extern int yylineno ; 
 void yyerror(char*s, ...);
+int yylex(void);
+int yyparse(void);
 
 
 struct ast {
@@ -15,7 +17,7 @@ struct numval {
 
 
 struct ast* newast(int nodetype, struct ast *l, struct ast *r);
-struct ast *newnum(double d);
+struct ast* newnum(double d);
 
 
 double eval(struct ast *a);
