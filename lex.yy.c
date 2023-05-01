@@ -505,9 +505,10 @@ char *yytext;
 #line 3 "cal.l"
 #include "declarations.h"
 #include "cal.tab.h"
-#line 509 "lex.yy.c"
+#include "symtab.h"
+#line 510 "lex.yy.c"
 /* float exponent */
-#line 511 "lex.yy.c"
+#line 512 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -724,9 +725,9 @@ YY_DECL
 		}
 
 	{
-#line 10 "cal.l"
+#line 11 "cal.l"
 
-#line 730 "lex.yy.c"
+#line 731 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -794,112 +795,112 @@ do_action:	/* This label is used only to access EOF actions. */
 			goto yy_find_action;
 
 case 1:
-#line 12 "cal.l"
-case 2:
 #line 13 "cal.l"
-case 3:
+case 2:
 #line 14 "cal.l"
-case 4:
+case 3:
 #line 15 "cal.l"
-case 5:
+case 4:
 #line 16 "cal.l"
-case 6:
+case 5:
 #line 17 "cal.l"
-case 7:
+case 6:
 #line 18 "cal.l"
-case 8:
+case 7:
 #line 19 "cal.l"
-case 9:
+case 8:
 #line 20 "cal.l"
+case 9:
+#line 21 "cal.l"
 case 10:
 YY_RULE_SETUP
-#line 20 "cal.l"
+#line 21 "cal.l"
 { return yytext[0]; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 22 "cal.l"
-{ yylval.fn = 1 ; return CMP ;}
+#line 23 "cal.l"
+{yylval.fn = 1 ; return CMP ;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 23 "cal.l"
+#line 24 "cal.l"
 {yylval.fn = 2 ; return CMP ;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 24 "cal.l"
+#line 25 "cal.l"
 {yylval.fn = 3 ; return CMP ;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 25 "cal.l"
+#line 26 "cal.l"
 {yylval.fn = 4 ; return CMP ;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 26 "cal.l"
+#line 27 "cal.l"
 {yylval.fn = 5 ; return CMP ;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 27 "cal.l"
+#line 28 "cal.l"
 {yylval.fn = 6 ; return CMP ;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 30 "cal.l"
+#line 31 "cal.l"
 { return IF ; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 31 "cal.l"
+#line 32 "cal.l"
 { return ELSE ; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 32 "cal.l"
+#line 33 "cal.l"
 { return WHILE ; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 35 "cal.l"
-{return NAME; }
+#line 36 "cal.l"
+{ yylval.s = lookup(yytext) ; return NAME; }
 	YY_BREAK
 case 21:
-#line 38 "cal.l"
+#line 39 "cal.l"
 case 22:
 YY_RULE_SETUP
-#line 38 "cal.l"
+#line 39 "cal.l"
 { yylval.d = atof(yytext); return NUMBER; }
 	YY_BREAK
 case 23:
 /* rule 23 can match eol */
 YY_RULE_SETUP
-#line 39 "cal.l"
+#line 40 "cal.l"
 { return EOL; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 40 "cal.l"
+#line 41 "cal.l"
 
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 41 "cal.l"
+#line 42 "cal.l"
 
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 42 "cal.l"
+#line 43 "cal.l"
 { yyerror("Mystery character %c\n", *yytext); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 44 "cal.l"
+#line 45 "cal.l"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
-#line 903 "lex.yy.c"
+#line 904 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1916,7 +1917,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 44 "cal.l"
+#line 45 "cal.l"
 
 
 

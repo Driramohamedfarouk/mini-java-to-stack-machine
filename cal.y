@@ -63,6 +63,8 @@ E : E CMP E {$$ = newcmp($2,$1,$3);}
   | E '/' E {$$ = newast('/',$1,$3);}
   | '(' E ')' { $$ = $2 ;  }
   | NUMBER { $$ = newnum($1);}
+  | NAME    {$$ = newref($1);}
+  | NAME '=' E {$$ = newasgn($1,$3);} /* variable identifiers are represented as poiter to the sym tab */
   ;
 
 %%

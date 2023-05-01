@@ -1,3 +1,4 @@
+#define SYM_TAB_SIZE 9777
 
 struct symbol
 {
@@ -9,14 +10,14 @@ struct symbol
 
 
 
-// linked list of symbols 
+// linked list of symbols used as arguments for functions  
 struct symlist
 {
     struct symbol *sym ; 
     struct symlist *next ;    
 };
 
-#define SYM_TAB_SIZE 9777
+
 struct symbol symbol_table[SYM_TAB_SIZE];
 
 struct symbol *lookup(char*);

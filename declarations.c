@@ -2,6 +2,7 @@
 #include <stdlib.h> 
 #include <stdarg.h> 
 #include "declarations.h"
+#include "symtab.h"
 
 struct ast* newast(int nodetype, struct ast *l, struct ast *r){
 	struct ast *a = malloc(sizeof(struct ast));
@@ -45,11 +46,39 @@ struct ast *newcmp(int cmptype, struct ast *l, struct ast *r){
 }
 
 
+struct ast *newref(struct symbol *s){
+	struct symref *a = malloc(sizeof(struct symref)) ;
+	if(!a) {
+		yyerror("out of space");
+		exit(0);
+	}
+	a->nodetype='N';
+	a->s = s ; 
+	return (struct ast*) a ;
+}
+
+struct ast *newasgn(struct symbol *s, struct ast *a){
+	struct symasgn *b = malloc(sizeof(struct symasgn));
+	if(!b) {
+		yyerror("out of space");
+		exit(0);
+	}
+	b->nodetype = '=' ;
+	b->s = s ; 
+	b->a = a ; 
+	return (struct ast*) b ; 
+}
 
 double eval(struct ast *a) {
 	double v; // calculated value of this subtree
 	switch(a->nodetype) {
 	case 'K': v = ((struct numval *)a)->value; break;
+
+	/* return the value in the symbol table */
+	case 'N': v = (((struct symref *)a)->s)->value ;
+	/* evaluate the AST and put the value to the symbol table */
+	case '=': v = ((struct symasgn *)a)->s->value = eval(((struct symasgn *)a)->a) ; break ;  
+
 	case '+': v = eval(a->l) + eval(a->r); break;
 	case '-': v = eval(a->l) - eval(a->r); break;
 	case '*': v = eval(a->l) * eval(a->r); break;
@@ -112,8 +141,16 @@ void treefree(struct ast *a) {
 	case 'M':
 		treefree(a->l);
 	/* no subtree */
-	case 'K':
+	case 'K': case 'N':
 		free(a);
+		break;
+	case '=':
+		free(((struct symasgn*)a)->a);
+		break;	
+	case 'I': 
+		free(((struct flow*)a)->cond);
+		if (((struct flow*)a)->thenb) free(((struct flow*)a)->thenb);
+		if (((struct flow*)a)->elseb) free(((struct flow*)a)->elseb);	
 		break;
 	default: printf("internal error: free bad node %c\n", a->nodetype);
 	}

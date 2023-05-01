@@ -22,11 +22,27 @@ struct flow {
 	struct ast* elseb ; /* else branch */
 };
 
+/* is a reference to the variable in the symbol table */
+struct symref {
+	int nodetype ; /* type N */
+	struct symbol *s; 
+};
+
+/* the node representing a variable assignment  */
+struct symasgn{
+	int nodetype ; /* type = */
+	struct symbol *s; 
+	struct ast *a ; 
+};
+
 
 struct ast* newast(int nodetype, struct ast *l, struct ast *r);
 struct ast* newnum(double d);
 struct ast *newflow(int nodetype, struct ast *cond, struct ast *tl, struct ast *tr);
 struct ast *newcmp(int cmptype, struct ast *l, struct ast *r);
+
+struct ast *newref(struct symbol *s);
+struct ast *newasgn(struct symbol *s,struct ast *a);
 
 double eval(struct ast *a);
 
