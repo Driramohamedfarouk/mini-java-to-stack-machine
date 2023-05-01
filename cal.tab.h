@@ -46,7 +46,12 @@ extern int yydebug;
   enum yytokentype
   {
     NUMBER = 258,
-    EOL = 259
+    NAME = 259,
+    EOL = 260,
+    IF = 261,
+    ELSE = 262,
+    WHILE = 263,
+    CMP = 264
   };
 #endif
 
@@ -55,12 +60,15 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 15 "cal.y" /* yacc.c:1909  */
+#line 16 "cal.y" /* yacc.c:1909  */
 
 struct ast* a ; 
 double d ; 
+struct symbol *s ; /* pointer to the symbol in the symbol table */
+struct symlist *sl ; 
+int fn ; /* which comparaison operator */
 
-#line 64 "cal.tab.h" /* yacc.c:1909  */
+#line 72 "cal.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
