@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_CAL_TAB_H_INCLUDED
-# define YY_YY_CAL_TAB_H_INCLUDED
+#ifndef YY_YY_JAVA_TAB_H_INCLUDED
+# define YY_YY_JAVA_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -45,13 +45,16 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    NUMBER = 258,
-    NAME = 259,
-    EOL = 260,
+    CLASS = 258,
+    NUMBER = 259,
+    NAME = 260,
     IF = 261,
     ELSE = 262,
     WHILE = 263,
-    CMP = 264
+    MODIFIER = 264,
+    TYPE = 265,
+    RETURN = 266,
+    CMP = 267
   };
 #endif
 
@@ -60,7 +63,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 16 "cal.y" /* yacc.c:1909  */
+#line 16 "java.y" /* yacc.c:1909  */
 
 struct ast* a ; 
 double d ; 
@@ -68,7 +71,7 @@ struct symbol *s ; /* pointer to the symbol in the symbol table */
 struct symlist *sl ; 
 int fn ; /* which comparaison operator */
 
-#line 72 "cal.tab.h" /* yacc.c:1909  */
+#line 75 "java.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -81,4 +84,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_CAL_TAB_H_INCLUDED  */
+#endif /* !YY_YY_JAVA_TAB_H_INCLUDED  */

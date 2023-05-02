@@ -1,0 +1,950 @@
+Terminals unused in grammar
+
+   RETURN
+
+
+State 8 conflicts: 1 shift/reduce
+State 14 conflicts: 1 shift/reduce
+State 17 conflicts: 1 shift/reduce
+State 61 conflicts: 1 shift/reduce
+State 62 conflicts: 1 shift/reduce
+State 73 conflicts: 1 shift/reduce
+State 77 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: %empty
+    2        | list_modifiers CLASS NAME '{' list '}'
+
+    3 list_modifiers: %empty
+    4               | MODIFIER list_modifiers
+
+    5 stmt: IF '(' cond ')' '{' list '}'
+    6     | IF '(' cond ')' '{' list '}' ELSE '{' list '}'
+    7     | WHILE '(' cond ')' '{' list '}'
+    8     | assignment ';'
+    9     | func_call ';'
+
+   10 list: %empty
+   11     | stmt list
+   12     | func_def list
+
+   13 assignment: NAME '=' E
+   14           | TYPE NAME '=' E
+
+   15 E: E '+' E
+   16  | E '-' E
+   17  | E '*' E
+   18  | E '/' E
+   19  | '(' E ')'
+   20  | NUMBER
+   21  | NAME
+
+   22 cond: E CMP E
+
+   23 func_def: list_modifiers TYPE NAME '(' vars ')' '{' list '}'
+
+   24 vars: %empty
+   25     | var_list
+
+   26 var_list: TYPE NAME
+   27         | TYPE NAME ',' var_list
+
+   28 func_call: NAME '(' args ')'
+
+   29 args: %empty
+   30     | list_arg
+
+   31 list_arg: E
+   32         | E ',' list_arg
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 5 6 7 19 23 28
+')' (41) 5 6 7 19 23 28
+'*' (42) 17
+'+' (43) 15
+',' (44) 27 32
+'-' (45) 16
+'/' (47) 18
+';' (59) 8 9
+'=' (61) 13 14
+'{' (123) 2 5 6 7 23
+'}' (125) 2 5 6 7 23
+error (256)
+CLASS (258) 2
+NUMBER (259) 20
+NAME (260) 2 13 14 21 23 26 27 28
+IF (261) 5 6
+ELSE (262) 6
+WHILE (263) 7
+MODIFIER (264) 4
+TYPE (265) 14 23 26 27
+RETURN (266)
+CMP (267) 22
+
+
+Nonterminals, with rules where they appear
+
+$accept (24)
+    on left: 0
+program (25)
+    on left: 1 2, on right: 0
+list_modifiers (26)
+    on left: 3 4, on right: 2 4 23
+stmt (27)
+    on left: 5 6 7 8 9, on right: 11
+list (28)
+    on left: 10 11 12, on right: 2 5 6 7 11 12 23
+assignment (29)
+    on left: 13 14, on right: 8
+E (30)
+    on left: 15 16 17 18 19 20 21, on right: 13 14 15 16 17 18 19 22
+    31 32
+cond (31)
+    on left: 22, on right: 5 6 7
+func_def (32)
+    on left: 23, on right: 12
+vars (33)
+    on left: 24 25, on right: 23
+var_list (34)
+    on left: 26 27, on right: 25 27
+func_call (35)
+    on left: 28, on right: 9
+args (36)
+    on left: 29 30, on right: 28
+list_arg (37)
+    on left: 31 32, on right: 30 32
+
+
+State 0
+
+    0 $accept: . program $end
+
+    MODIFIER  shift, and go to state 1
+
+    CLASS     reduce using rule 3 (list_modifiers)
+    $default  reduce using rule 1 (program)
+
+    program         go to state 2
+    list_modifiers  go to state 3
+
+
+State 1
+
+    4 list_modifiers: MODIFIER . list_modifiers
+
+    MODIFIER  shift, and go to state 1
+
+    $default  reduce using rule 3 (list_modifiers)
+
+    list_modifiers  go to state 4
+
+
+State 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+    2 program: list_modifiers . CLASS NAME '{' list '}'
+
+    CLASS  shift, and go to state 6
+
+
+State 4
+
+    4 list_modifiers: MODIFIER list_modifiers .
+
+    $default  reduce using rule 4 (list_modifiers)
+
+
+State 5
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 6
+
+    2 program: list_modifiers CLASS . NAME '{' list '}'
+
+    NAME  shift, and go to state 7
+
+
+State 7
+
+    2 program: list_modifiers CLASS NAME . '{' list '}'
+
+    '{'  shift, and go to state 8
+
+
+State 8
+
+    2 program: list_modifiers CLASS NAME '{' . list '}'
+
+    NAME      shift, and go to state 9
+    IF        shift, and go to state 10
+    WHILE     shift, and go to state 11
+    MODIFIER  shift, and go to state 1
+    TYPE      shift, and go to state 12
+
+    TYPE      [reduce using rule 3 (list_modifiers)]
+    $default  reduce using rule 10 (list)
+
+    list_modifiers  go to state 13
+    stmt            go to state 14
+    list            go to state 15
+    assignment      go to state 16
+    func_def        go to state 17
+    func_call       go to state 18
+
+
+State 9
+
+   13 assignment: NAME . '=' E
+   28 func_call: NAME . '(' args ')'
+
+    '='  shift, and go to state 19
+    '('  shift, and go to state 20
+
+
+State 10
+
+    5 stmt: IF . '(' cond ')' '{' list '}'
+    6     | IF . '(' cond ')' '{' list '}' ELSE '{' list '}'
+
+    '('  shift, and go to state 21
+
+
+State 11
+
+    7 stmt: WHILE . '(' cond ')' '{' list '}'
+
+    '('  shift, and go to state 22
+
+
+State 12
+
+   14 assignment: TYPE . NAME '=' E
+
+    NAME  shift, and go to state 23
+
+
+State 13
+
+   23 func_def: list_modifiers . TYPE NAME '(' vars ')' '{' list '}'
+
+    TYPE  shift, and go to state 24
+
+
+State 14
+
+   11 list: stmt . list
+
+    NAME      shift, and go to state 9
+    IF        shift, and go to state 10
+    WHILE     shift, and go to state 11
+    MODIFIER  shift, and go to state 1
+    TYPE      shift, and go to state 12
+
+    TYPE      [reduce using rule 3 (list_modifiers)]
+    $default  reduce using rule 10 (list)
+
+    list_modifiers  go to state 13
+    stmt            go to state 14
+    list            go to state 25
+    assignment      go to state 16
+    func_def        go to state 17
+    func_call       go to state 18
+
+
+State 15
+
+    2 program: list_modifiers CLASS NAME '{' list . '}'
+
+    '}'  shift, and go to state 26
+
+
+State 16
+
+    8 stmt: assignment . ';'
+
+    ';'  shift, and go to state 27
+
+
+State 17
+
+   12 list: func_def . list
+
+    NAME      shift, and go to state 9
+    IF        shift, and go to state 10
+    WHILE     shift, and go to state 11
+    MODIFIER  shift, and go to state 1
+    TYPE      shift, and go to state 12
+
+    TYPE      [reduce using rule 3 (list_modifiers)]
+    $default  reduce using rule 10 (list)
+
+    list_modifiers  go to state 13
+    stmt            go to state 14
+    list            go to state 28
+    assignment      go to state 16
+    func_def        go to state 17
+    func_call       go to state 18
+
+
+State 18
+
+    9 stmt: func_call . ';'
+
+    ';'  shift, and go to state 29
+
+
+State 19
+
+   13 assignment: NAME '=' . E
+
+    NUMBER  shift, and go to state 30
+    NAME    shift, and go to state 31
+    '('     shift, and go to state 32
+
+    E  go to state 33
+
+
+State 20
+
+   28 func_call: NAME '(' . args ')'
+
+    NUMBER  shift, and go to state 30
+    NAME    shift, and go to state 31
+    '('     shift, and go to state 32
+
+    $default  reduce using rule 29 (args)
+
+    E         go to state 34
+    args      go to state 35
+    list_arg  go to state 36
+
+
+State 21
+
+    5 stmt: IF '(' . cond ')' '{' list '}'
+    6     | IF '(' . cond ')' '{' list '}' ELSE '{' list '}'
+
+    NUMBER  shift, and go to state 30
+    NAME    shift, and go to state 31
+    '('     shift, and go to state 32
+
+    E     go to state 37
+    cond  go to state 38
+
+
+State 22
+
+    7 stmt: WHILE '(' . cond ')' '{' list '}'
+
+    NUMBER  shift, and go to state 30
+    NAME    shift, and go to state 31
+    '('     shift, and go to state 32
+
+    E     go to state 37
+    cond  go to state 39
+
+
+State 23
+
+   14 assignment: TYPE NAME . '=' E
+
+    '='  shift, and go to state 40
+
+
+State 24
+
+   23 func_def: list_modifiers TYPE . NAME '(' vars ')' '{' list '}'
+
+    NAME  shift, and go to state 41
+
+
+State 25
+
+   11 list: stmt list .
+
+    $default  reduce using rule 11 (list)
+
+
+State 26
+
+    2 program: list_modifiers CLASS NAME '{' list '}' .
+
+    $default  reduce using rule 2 (program)
+
+
+State 27
+
+    8 stmt: assignment ';' .
+
+    $default  reduce using rule 8 (stmt)
+
+
+State 28
+
+   12 list: func_def list .
+
+    $default  reduce using rule 12 (list)
+
+
+State 29
+
+    9 stmt: func_call ';' .
+
+    $default  reduce using rule 9 (stmt)
+
+
+State 30
+
+   20 E: NUMBER .
+
+    $default  reduce using rule 20 (E)
+
+
+State 31
+
+   21 E: NAME .
+
+    $default  reduce using rule 21 (E)
+
+
+State 32
+
+   19 E: '(' . E ')'
+
+    NUMBER  shift, and go to state 30
+    NAME    shift, and go to state 31
+    '('     shift, and go to state 32
+
+    E  go to state 42
+
+
+State 33
+
+   13 assignment: NAME '=' E .
+   15 E: E . '+' E
+   16  | E . '-' E
+   17  | E . '*' E
+   18  | E . '/' E
+
+    '+'  shift, and go to state 43
+    '-'  shift, and go to state 44
+    '*'  shift, and go to state 45
+    '/'  shift, and go to state 46
+
+    $default  reduce using rule 13 (assignment)
+
+
+State 34
+
+   15 E: E . '+' E
+   16  | E . '-' E
+   17  | E . '*' E
+   18  | E . '/' E
+   31 list_arg: E .
+   32         | E . ',' list_arg
+
+    '+'  shift, and go to state 43
+    '-'  shift, and go to state 44
+    '*'  shift, and go to state 45
+    '/'  shift, and go to state 46
+    ','  shift, and go to state 47
+
+    $default  reduce using rule 31 (list_arg)
+
+
+State 35
+
+   28 func_call: NAME '(' args . ')'
+
+    ')'  shift, and go to state 48
+
+
+State 36
+
+   30 args: list_arg .
+
+    $default  reduce using rule 30 (args)
+
+
+State 37
+
+   15 E: E . '+' E
+   16  | E . '-' E
+   17  | E . '*' E
+   18  | E . '/' E
+   22 cond: E . CMP E
+
+    CMP  shift, and go to state 49
+    '+'  shift, and go to state 43
+    '-'  shift, and go to state 44
+    '*'  shift, and go to state 45
+    '/'  shift, and go to state 46
+
+
+State 38
+
+    5 stmt: IF '(' cond . ')' '{' list '}'
+    6     | IF '(' cond . ')' '{' list '}' ELSE '{' list '}'
+
+    ')'  shift, and go to state 50
+
+
+State 39
+
+    7 stmt: WHILE '(' cond . ')' '{' list '}'
+
+    ')'  shift, and go to state 51
+
+
+State 40
+
+   14 assignment: TYPE NAME '=' . E
+
+    NUMBER  shift, and go to state 30
+    NAME    shift, and go to state 31
+    '('     shift, and go to state 32
+
+    E  go to state 52
+
+
+State 41
+
+   23 func_def: list_modifiers TYPE NAME . '(' vars ')' '{' list '}'
+
+    '('  shift, and go to state 53
+
+
+State 42
+
+   15 E: E . '+' E
+   16  | E . '-' E
+   17  | E . '*' E
+   18  | E . '/' E
+   19  | '(' E . ')'
+
+    '+'  shift, and go to state 43
+    '-'  shift, and go to state 44
+    '*'  shift, and go to state 45
+    '/'  shift, and go to state 46
+    ')'  shift, and go to state 54
+
+
+State 43
+
+   15 E: E '+' . E
+
+    NUMBER  shift, and go to state 30
+    NAME    shift, and go to state 31
+    '('     shift, and go to state 32
+
+    E  go to state 55
+
+
+State 44
+
+   16 E: E '-' . E
+
+    NUMBER  shift, and go to state 30
+    NAME    shift, and go to state 31
+    '('     shift, and go to state 32
+
+    E  go to state 56
+
+
+State 45
+
+   17 E: E '*' . E
+
+    NUMBER  shift, and go to state 30
+    NAME    shift, and go to state 31
+    '('     shift, and go to state 32
+
+    E  go to state 57
+
+
+State 46
+
+   18 E: E '/' . E
+
+    NUMBER  shift, and go to state 30
+    NAME    shift, and go to state 31
+    '('     shift, and go to state 32
+
+    E  go to state 58
+
+
+State 47
+
+   32 list_arg: E ',' . list_arg
+
+    NUMBER  shift, and go to state 30
+    NAME    shift, and go to state 31
+    '('     shift, and go to state 32
+
+    E         go to state 34
+    list_arg  go to state 59
+
+
+State 48
+
+   28 func_call: NAME '(' args ')' .
+
+    $default  reduce using rule 28 (func_call)
+
+
+State 49
+
+   22 cond: E CMP . E
+
+    NUMBER  shift, and go to state 30
+    NAME    shift, and go to state 31
+    '('     shift, and go to state 32
+
+    E  go to state 60
+
+
+State 50
+
+    5 stmt: IF '(' cond ')' . '{' list '}'
+    6     | IF '(' cond ')' . '{' list '}' ELSE '{' list '}'
+
+    '{'  shift, and go to state 61
+
+
+State 51
+
+    7 stmt: WHILE '(' cond ')' . '{' list '}'
+
+    '{'  shift, and go to state 62
+
+
+State 52
+
+   14 assignment: TYPE NAME '=' E .
+   15 E: E . '+' E
+   16  | E . '-' E
+   17  | E . '*' E
+   18  | E . '/' E
+
+    '+'  shift, and go to state 43
+    '-'  shift, and go to state 44
+    '*'  shift, and go to state 45
+    '/'  shift, and go to state 46
+
+    $default  reduce using rule 14 (assignment)
+
+
+State 53
+
+   23 func_def: list_modifiers TYPE NAME '(' . vars ')' '{' list '}'
+
+    TYPE  shift, and go to state 63
+
+    $default  reduce using rule 24 (vars)
+
+    vars      go to state 64
+    var_list  go to state 65
+
+
+State 54
+
+   19 E: '(' E ')' .
+
+    $default  reduce using rule 19 (E)
+
+
+State 55
+
+   15 E: E . '+' E
+   15  | E '+' E .
+   16  | E . '-' E
+   17  | E . '*' E
+   18  | E . '/' E
+
+    '*'  shift, and go to state 45
+    '/'  shift, and go to state 46
+
+    $default  reduce using rule 15 (E)
+
+
+State 56
+
+   15 E: E . '+' E
+   16  | E . '-' E
+   16  | E '-' E .
+   17  | E . '*' E
+   18  | E . '/' E
+
+    '*'  shift, and go to state 45
+    '/'  shift, and go to state 46
+
+    $default  reduce using rule 16 (E)
+
+
+State 57
+
+   15 E: E . '+' E
+   16  | E . '-' E
+   17  | E . '*' E
+   17  | E '*' E .
+   18  | E . '/' E
+
+    $default  reduce using rule 17 (E)
+
+
+State 58
+
+   15 E: E . '+' E
+   16  | E . '-' E
+   17  | E . '*' E
+   18  | E . '/' E
+   18  | E '/' E .
+
+    $default  reduce using rule 18 (E)
+
+
+State 59
+
+   32 list_arg: E ',' list_arg .
+
+    $default  reduce using rule 32 (list_arg)
+
+
+State 60
+
+   15 E: E . '+' E
+   16  | E . '-' E
+   17  | E . '*' E
+   18  | E . '/' E
+   22 cond: E CMP E .
+
+    '+'  shift, and go to state 43
+    '-'  shift, and go to state 44
+    '*'  shift, and go to state 45
+    '/'  shift, and go to state 46
+
+    $default  reduce using rule 22 (cond)
+
+
+State 61
+
+    5 stmt: IF '(' cond ')' '{' . list '}'
+    6     | IF '(' cond ')' '{' . list '}' ELSE '{' list '}'
+
+    NAME      shift, and go to state 9
+    IF        shift, and go to state 10
+    WHILE     shift, and go to state 11
+    MODIFIER  shift, and go to state 1
+    TYPE      shift, and go to state 12
+
+    TYPE      [reduce using rule 3 (list_modifiers)]
+    $default  reduce using rule 10 (list)
+
+    list_modifiers  go to state 13
+    stmt            go to state 14
+    list            go to state 66
+    assignment      go to state 16
+    func_def        go to state 17
+    func_call       go to state 18
+
+
+State 62
+
+    7 stmt: WHILE '(' cond ')' '{' . list '}'
+
+    NAME      shift, and go to state 9
+    IF        shift, and go to state 10
+    WHILE     shift, and go to state 11
+    MODIFIER  shift, and go to state 1
+    TYPE      shift, and go to state 12
+
+    TYPE      [reduce using rule 3 (list_modifiers)]
+    $default  reduce using rule 10 (list)
+
+    list_modifiers  go to state 13
+    stmt            go to state 14
+    list            go to state 67
+    assignment      go to state 16
+    func_def        go to state 17
+    func_call       go to state 18
+
+
+State 63
+
+   26 var_list: TYPE . NAME
+   27         | TYPE . NAME ',' var_list
+
+    NAME  shift, and go to state 68
+
+
+State 64
+
+   23 func_def: list_modifiers TYPE NAME '(' vars . ')' '{' list '}'
+
+    ')'  shift, and go to state 69
+
+
+State 65
+
+   25 vars: var_list .
+
+    $default  reduce using rule 25 (vars)
+
+
+State 66
+
+    5 stmt: IF '(' cond ')' '{' list . '}'
+    6     | IF '(' cond ')' '{' list . '}' ELSE '{' list '}'
+
+    '}'  shift, and go to state 70
+
+
+State 67
+
+    7 stmt: WHILE '(' cond ')' '{' list . '}'
+
+    '}'  shift, and go to state 71
+
+
+State 68
+
+   26 var_list: TYPE NAME .
+   27         | TYPE NAME . ',' var_list
+
+    ','  shift, and go to state 72
+
+    $default  reduce using rule 26 (var_list)
+
+
+State 69
+
+   23 func_def: list_modifiers TYPE NAME '(' vars ')' . '{' list '}'
+
+    '{'  shift, and go to state 73
+
+
+State 70
+
+    5 stmt: IF '(' cond ')' '{' list '}' .
+    6     | IF '(' cond ')' '{' list '}' . ELSE '{' list '}'
+
+    ELSE  shift, and go to state 74
+
+    $default  reduce using rule 5 (stmt)
+
+
+State 71
+
+    7 stmt: WHILE '(' cond ')' '{' list '}' .
+
+    $default  reduce using rule 7 (stmt)
+
+
+State 72
+
+   27 var_list: TYPE NAME ',' . var_list
+
+    TYPE  shift, and go to state 63
+
+    var_list  go to state 75
+
+
+State 73
+
+   23 func_def: list_modifiers TYPE NAME '(' vars ')' '{' . list '}'
+
+    NAME      shift, and go to state 9
+    IF        shift, and go to state 10
+    WHILE     shift, and go to state 11
+    MODIFIER  shift, and go to state 1
+    TYPE      shift, and go to state 12
+
+    TYPE      [reduce using rule 3 (list_modifiers)]
+    $default  reduce using rule 10 (list)
+
+    list_modifiers  go to state 13
+    stmt            go to state 14
+    list            go to state 76
+    assignment      go to state 16
+    func_def        go to state 17
+    func_call       go to state 18
+
+
+State 74
+
+    6 stmt: IF '(' cond ')' '{' list '}' ELSE . '{' list '}'
+
+    '{'  shift, and go to state 77
+
+
+State 75
+
+   27 var_list: TYPE NAME ',' var_list .
+
+    $default  reduce using rule 27 (var_list)
+
+
+State 76
+
+   23 func_def: list_modifiers TYPE NAME '(' vars ')' '{' list . '}'
+
+    '}'  shift, and go to state 78
+
+
+State 77
+
+    6 stmt: IF '(' cond ')' '{' list '}' ELSE '{' . list '}'
+
+    NAME      shift, and go to state 9
+    IF        shift, and go to state 10
+    WHILE     shift, and go to state 11
+    MODIFIER  shift, and go to state 1
+    TYPE      shift, and go to state 12
+
+    TYPE      [reduce using rule 3 (list_modifiers)]
+    $default  reduce using rule 10 (list)
+
+    list_modifiers  go to state 13
+    stmt            go to state 14
+    list            go to state 79
+    assignment      go to state 16
+    func_def        go to state 17
+    func_call       go to state 18
+
+
+State 78
+
+   23 func_def: list_modifiers TYPE NAME '(' vars ')' '{' list '}' .
+
+    $default  reduce using rule 23 (func_def)
+
+
+State 79
+
+    6 stmt: IF '(' cond ')' '{' list '}' ELSE '{' list . '}'
+
+    '}'  shift, and go to state 80
+
+
+State 80
+
+    6 stmt: IF '(' cond ')' '{' list '}' ELSE '{' list '}' .
+
+    $default  reduce using rule 6 (stmt)

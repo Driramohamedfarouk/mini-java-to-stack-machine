@@ -69,6 +69,25 @@ struct ast *newasgn(struct symbol *s, struct ast *a){
 	return (struct ast*) b ; 
 }
 
+/*
+creates a func node 
+pointer to the symbol in the symbol table
+ast of type L list 
+*/
+struct ast *newfunc(struct symbol *s,struct ast *l){
+	struct func *a = malloc(sizeof(struct func));
+	if(!a){
+		yyerror("out of space");
+		exit(0);
+	}
+	a->nodetype = 'C' ; 
+	a->l = l ; 
+	a->s = s ; 
+	return (struct ast *) a ; 
+}
+
+
+
 double eval(struct ast *a) {
 	double v; // calculated value of this subtree
 	switch(a->nodetype) {
@@ -157,9 +176,100 @@ void treefree(struct ast *a) {
 	free(a);
 }
 
-int main() {
-	printf("> ");
-	return yyparse();
+
+void print_ast(struct ast* node, int level) {
+    if (node == NULL) {
+        return;
+    }
+    int i;
+    for (i = 0; i < level; i++) {
+        printf("  ");
+    }
+    switch (node->nodetype) {
+        case 'K':
+            printf("%f\n",((struct numval*)node)->value);
+            break;
+        case 'N':
+            printf("%s",((struct symref*)node)->s->name);
+            break;
+        case '=':
+            printf("= \n");
+			print_ast(node->l, level + 1);
+            print_ast(node->r, level + 1);
+            break;
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+            printf("%c\n", node->nodetype);
+            print_ast(node->l, level + 1);
+            print_ast(node->r, level + 1);
+            break;
+        case 'I':
+            printf("if\n");
+            print_ast(((struct flow*)node)->thenb, level + 1);
+            print_ast(((struct flow*)node)->elseb, level + 1);
+            break;
+        case 'W':
+            printf("while\n");
+            print_ast(node->l, level + 1);
+            print_ast(node->r, level + 1);
+            break;
+        case 'L':
+            printf("list\n");
+            print_ast(node->l, level + 1);
+            print_ast(node->r, level);
+            break;
+        case 'F':
+            printf("call\n");
+            print_ast(node->l, level + 1);
+            break;
+        case 'M':
+            printf("modifier \n");
+            print_ast(node->l, level + 1);
+            break;
+        case 'C':
+            printf("user_func\n");
+            print_ast(node->l, level + 1);
+            print_ast(node->r, level + 1);
+            break;
+        default:
+            printf("unknown nodetype %c\n", node->nodetype);
+            break;
+    }
+}
+
+
+
+extern FILE *yyin;
+
+
+int main(int argc, char* argv[]) {
+  if (argc < 2) {
+    printf("Usage: %s filename\n", argv[0]);
+    return 1;
+  }
+
+  FILE* fp = fopen(argv[1], "r");
+  if (fp == NULL) {
+    printf("Error: cannot open file '%s'\n", argv[1]);
+    return 1;
+  }
+  yyin = fp;
+  yyparse();
+
+  fclose(fp);
+  printf("\n");	
+  for (int i = 0; i < SYM_TAB_SIZE; i++)
+  {
+	if (symbol_table[i].name)
+	{
+		printf("%s  ",symbol_table[i].name) ;		
+	}
+	
+  }
+  printf("\n");
+  return 0;
 }
 
 void yyerror(char *s, ...) {

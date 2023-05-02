@@ -24,3 +24,8 @@ struct symbol *lookup(char*);
 
 struct symlist *newsymlist(struct symbol *sym, struct symlist *next);
 void symlistfree(struct symlist *sl);
+
+
+/*A function definition consists of the name of the function, a list of dummy arguments,
+and an AST that represents the body of the function*/
+void def_func(struct symbol* name,struct symlist *syms,struct ast *stmts);

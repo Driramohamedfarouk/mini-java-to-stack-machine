@@ -4,6 +4,8 @@
 #include <stdarg.h>
 #include <string.h>
 #include "symtab.h"
+#include "declarations.h"
+
 void yyerror(char*s, ...);
 
 
@@ -36,3 +38,36 @@ struct symbol *lookup(char* sym) {
     yyerror("symbol table is full \n");
     abort();
 };
+
+
+struct symlist *newsymlist(struct symbol *sym, struct symlist *next){
+    struct symlist *sl = malloc(sizeof(struct symlist));
+    if(!sl) {
+        yyerror("out of space");
+        exit(0);
+    }
+    sl->sym = sym;
+    sl->next = next;
+    return sl;
+}
+
+/* free a list of symbols */
+void symlistfree(struct symlist *sl) {
+	struct symlist *nsl;
+	while(sl) {
+		nsl = sl->next;
+		free(sl);
+		sl = nsl;
+	}
+}
+
+
+void def_func(struct symbol *name,struct symlist *syms,struct ast *stmts){
+	if(name->func) symlistfree(name->syms);
+	if (name->syms) treefree(name->func);
+	name->func = stmts ; 
+	name->syms	= syms ; 
+}
+
+
+

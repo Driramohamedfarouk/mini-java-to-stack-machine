@@ -35,6 +35,12 @@ struct symasgn{
 	struct ast *a ; 
 };
 
+struct func {
+	int nodetype ; /* type C */
+	struct ast *l ; /* statements  */
+	struct symbol *s  ; /* list of arguments */
+};
+
 
 struct ast* newast(int nodetype, struct ast *l, struct ast *r);
 struct ast* newnum(double d);
@@ -44,8 +50,17 @@ struct ast *newcmp(int cmptype, struct ast *l, struct ast *r);
 struct ast *newref(struct symbol *s);
 struct ast *newasgn(struct symbol *s,struct ast *a);
 
+
+struct ast *newfunc(struct symbol *s,struct ast *l);
+
+
+
+
+
 double eval(struct ast *a);
 
 void treefree(struct ast *a) ;
+
+void print_ast(struct ast* node, int level);
 
 
