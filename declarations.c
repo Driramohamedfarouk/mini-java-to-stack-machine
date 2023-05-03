@@ -257,18 +257,9 @@ int main(int argc, char* argv[]) {
   }
   yyin = fp;
   yyparse();
-
+  print_symtab();	
   fclose(fp);
-  printf("\n");	
-  for (int i = 0; i < SYM_TAB_SIZE; i++)
-  {
-	if (symbol_table[i].name)
-	{
-		printf("%s  ",symbol_table[i].name) ;		
-	}
-	
-  }
-  printf("\n");
+  
   return 0;
 }
 

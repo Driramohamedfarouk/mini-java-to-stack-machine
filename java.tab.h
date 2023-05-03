@@ -70,8 +70,9 @@ double d ;
 struct symbol *s ; /* pointer to the symbol in the symbol table */
 struct symlist *sl ; 
 int fn ; /* which comparaison operator */
+char *name ; 
 
-#line 75 "java.tab.h" /* yacc.c:1909  */
+#line 76 "java.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

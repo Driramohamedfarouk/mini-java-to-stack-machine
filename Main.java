@@ -1,6 +1,6 @@
 class Main {
     int x = 5 ; 
-    int y = 6 ;
+    int x = 6 ;
     int z = x+y ; 
     public void call(){
 

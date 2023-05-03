@@ -40,6 +40,37 @@ struct symbol *lookup(char* sym) {
 };
 
 
+int exists(char* sym) {
+    struct symbol *sp = &symbol_table[symhash(sym)%SYM_TAB_SIZE];
+    /* if the symbol already exists */
+    if(sp->name&& !strcmp(sp->name,sym)) return 1 ;
+    return 0 ; 
+};
+
+
+struct symbol *insert(char *sym ) {
+    /* assume there will be no collision  */
+    struct symbol *sp = &symbol_table[symhash(sym)%SYM_TAB_SIZE];
+    int scount = SYM_TAB_SIZE ;
+    while (--scount>=0){
+        /* if the symbol already exists */
+        if(sp->name&& !strcmp(sp->name,sym)) exit(1) ;
+        /* if there is an empty slot */
+        if(!sp->name){
+            sp->name = strdup(sym);
+            sp->value = 0 ; 
+            sp->func = NULL ; 
+            sp->syms = NULL ; 
+            return sp ; 
+        }
+        /* otherwise increment pointer while checking that we did not arrive at the end */
+        if(++sp >= symbol_table+SYM_TAB_SIZE) sp = symbol_table ;  
+    }
+    yyerror("symbol table is full \n");
+    abort();
+}
+
+
 struct symlist *newsymlist(struct symbol *sym, struct symlist *next){
     struct symlist *sl = malloc(sizeof(struct symlist));
     if(!sl) {
@@ -69,5 +100,24 @@ void def_func(struct symbol *name,struct symlist *syms,struct ast *stmts){
 	name->syms	= syms ; 
 }
 
+struct symbol *new_symbol(char * name){
+    struct symbol *s = malloc(sizeof(struct symbol));
+    if(!s){
+        printf("out of space");
+        exit(1);
+    } 
+    s->name = name ; 
+    return s ; 
+}
 
 
+void print_symtab(){
+  printf("\n");	
+  for (int i = 0; i < SYM_TAB_SIZE; i++) {
+	if (symbol_table[i].name)
+	{
+		printf("%s  ",symbol_table[i].name) ;	
+	}	
+  }
+  printf("\n");
+}

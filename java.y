@@ -19,6 +19,7 @@ double d ;
 struct symbol *s ; /* pointer to the symbol in the symbol table */
 struct symlist *sl ; 
 int fn ; /* which comparaison operator */
+char *name ; 
 }
 
 %token CLASS 
@@ -34,7 +35,7 @@ int fn ; /* which comparaison operator */
 %left '+' '-'
 %left '*' '/'
 
-%type <a> E list stmt assignment func_call args list_arg cond 
+%type <a> E list stmt assignment func_call args list_arg cond declaration
 %type <sl> var_list vars
 
 %%
@@ -53,6 +54,7 @@ stmt : IF '(' cond ')' '{' list '}'  {$$ = newflow('I',$3,$6,NULL); }
   | WHILE '(' cond ')' '{' list '}' {$$ = newflow('W',$3,$6,NULL);}
   | assignment ';'
   | func_call ';'
+  | declaration ';' {  }
   ;
 
 list : { $$ = NULL; }
@@ -65,9 +67,11 @@ list : { $$ = NULL; }
   ;               
 
 assignment : NAME '=' E {$$ = newasgn($1,$3);} 
-           | TYPE  NAME '=' E {$$ = newasgn($2,$4);} 
-  ;
+           ;
 
+declaration : TYPE  NAME {$$ = newasgn($2,NULL);} 
+            | TYPE  NAME '=' E {$$ = newasgn($2,$4);} 
+            ;
 
 E : E '+' E {$$ = newast('+',$1,$3);}
   | E '-' E {$$ = newast('-',$1,$3);}
@@ -92,7 +96,7 @@ vars : { $$ = NULL ; }
   | var_list 
   ;
 
-var_list : TYPE NAME { $$ = newsymlist($2,NULL); }
+var_list : TYPE NAME { $$ = newsymlist($2,NULL);}
   | TYPE NAME ',' var_list { $$ = newsymlist($2,$4); }
   ; 
 
