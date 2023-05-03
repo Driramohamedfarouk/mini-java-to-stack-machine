@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
-#include <stdarg.h>
 #include <string.h>
 #include "symtab.h"
 #include "declarations.h"
@@ -47,7 +45,7 @@ int exists(char* sym) {
     return 0 ; 
 };
 
-
+/* should only be called after checking that the symbol does not exist already */
 struct symbol *insert(char *sym ) {
     /* assume there will be no collision  */
     struct symbol *sp = &symbol_table[symhash(sym)%SYM_TAB_SIZE];
@@ -100,14 +98,18 @@ void def_func(struct symbol *name,struct symlist *syms,struct ast *stmts){
 	name->syms	= syms ; 
 }
 
-struct symbol *new_symbol(char * name){
+struct symbol *new_symbol(char *name){
     struct symbol *s = malloc(sizeof(struct symbol));
     if(!s){
         printf("out of space");
         exit(1);
-    } 
-    s->name = name ; 
-    return s ; 
+    }
+    s->name = strdup(name) ;
+    s->func = NULL ;
+    s->syms = NULL ;
+    s->value = 0.0f ;
+    printf("new symbol : %s\n",s->name);
+    return s ;
 }
 
 

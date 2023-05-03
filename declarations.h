@@ -54,9 +54,6 @@ struct ast *newasgn(struct symbol *s,struct ast *a);
 struct ast *newfunc(struct symbol *s,struct ast *l);
 
 
-
-
-
 double eval(struct ast *a);
 
 void treefree(struct ast *a) ;

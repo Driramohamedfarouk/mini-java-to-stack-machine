@@ -33,6 +33,6 @@ and an AST that represents the body of the function*/
 void def_func(struct symbol* name,struct symlist *syms,struct ast *stmts);
 
 
-struct symbol *new_symbol(char * name) ; 
+struct symbol *new_symbol(char*) ;
 
 void print_symtab();

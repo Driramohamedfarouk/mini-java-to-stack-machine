@@ -935,7 +935,7 @@ YY_RULE_SETUP
 case 31:
 YY_RULE_SETUP
 #line 51 "java.l"
-{ yylval.s = lookup(yytext) ; ;  return NAME; }
+{ yylval.s = new_symbol(yytext) ; return NAME; }
 	YY_BREAK
 case 32:
 #line 54 "java.l"

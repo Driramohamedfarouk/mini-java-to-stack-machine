@@ -10,11 +10,11 @@ class Main {
 
     call() ;
 
-    public void print(int t){
+    public void print (int t){
 
     }
 
-    public static void main(String arg,int max){
+    public void main(String arg,int max){
         
         y = x+1 ; 
         print(z);
