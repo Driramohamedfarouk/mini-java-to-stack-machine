@@ -264,5 +264,9 @@ int main(int argc, char* argv[]) {
 }
 
 void yyerror(char *s, ...) {
-	printf("error %s at line %d\n",s,yylineno);
+    va_list ap;
+    va_start(ap, s);
+    fprintf(stderr, "%d: error: ", yylineno);
+    vfprintf(stderr, s, ap);
+    fprintf(stderr, "\n");
 }

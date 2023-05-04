@@ -3,6 +3,7 @@
 #include <string.h>
 #include "symtab.h"
 #include "declarations.h"
+#include "semantic.h"
 
 void yyerror(char*s, ...);
 
@@ -92,8 +93,9 @@ void symlistfree(struct symlist *sl) {
 
 
 void def_func(struct symbol *name,struct symlist *syms,struct ast *stmts){
-	if(name->func) symlistfree(name->syms);
-	if (name->syms) treefree(name->func);
+    check_multiply_declared_id(name->name);
+	if(name->func) treefree(name->func);
+	if (name->syms) symlistfree(name->syms);
 	name->func = stmts ; 
 	name->syms	= syms ; 
 }
@@ -108,7 +110,6 @@ struct symbol *new_symbol(char *name){
     s->func = NULL ;
     s->syms = NULL ;
     s->value = 0.0f ;
-    printf("new symbol : %s\n",s->name);
     return s ;
 }
 

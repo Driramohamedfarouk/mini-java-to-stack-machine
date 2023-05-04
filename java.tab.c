@@ -448,8 +448,8 @@ static const yytype_uint8 yyrline[] =
 {
        0,    43,    43,    44,    49,    50,    51,    52,    53,    54,
       57,    58,    63,    66,    69,    70,    73,    74,    75,    76,
-      77,    78,    79,    83,    86,    92,    93,    96,    97,   100,
-     103,   104,   106,   107
+      77,    78,    79,    83,    86,    91,    92,    95,    96,    99,
+     102,   103,   105,   106
 };
 #endif
 
@@ -1366,7 +1366,7 @@ yyreduce:
 
   case 22:
 #line 79 "java.y" /* yacc.c:1646  */
-    { printf("found : %s\n",(yyvsp[0].s)->name) ;  (yyval.a) = newref((yyvsp[0].s));}
+    { (yyval.a) = newref((yyvsp[0].s));}
 #line 1371 "java.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1379,62 +1379,61 @@ yyreduce:
   case 24:
 #line 86 "java.y" /* yacc.c:1646  */
     {
-  printf("defining a new function %s end \n",(yyvsp[-6].s)->name);
-  //def_func($3,$5,$8);
+  def_func((yyvsp[-6].s),(yyvsp[-4].sl),(yyvsp[-1].a));
 }
-#line 1386 "java.tab.c" /* yacc.c:1646  */
+#line 1385 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 92 "java.y" /* yacc.c:1646  */
+#line 91 "java.y" /* yacc.c:1646  */
     { (yyval.sl) = NULL ; }
-#line 1392 "java.tab.c" /* yacc.c:1646  */
+#line 1391 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 96 "java.y" /* yacc.c:1646  */
-    { /*$$ = newsymlist($2,NULL);*/}
-#line 1398 "java.tab.c" /* yacc.c:1646  */
+#line 95 "java.y" /* yacc.c:1646  */
+    { (yyval.sl) = newsymlist((yyvsp[0].s),NULL);}
+#line 1397 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 97 "java.y" /* yacc.c:1646  */
-    { /*$$ = newsymlist($2,$4);*/ }
-#line 1404 "java.tab.c" /* yacc.c:1646  */
+#line 96 "java.y" /* yacc.c:1646  */
+    { (yyval.sl) = newsymlist((yyvsp[-2].s),(yyvsp[0].sl)); }
+#line 1403 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 100 "java.y" /* yacc.c:1646  */
+#line 99 "java.y" /* yacc.c:1646  */
     { (yyval.a) = newfunc((yyvsp[-3].s),(yyvsp[-1].a)); }
-#line 1410 "java.tab.c" /* yacc.c:1646  */
+#line 1409 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 103 "java.y" /* yacc.c:1646  */
+#line 102 "java.y" /* yacc.c:1646  */
     { (yyval.a) = NULL; }
-#line 1416 "java.tab.c" /* yacc.c:1646  */
+#line 1415 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 104 "java.y" /* yacc.c:1646  */
+#line 103 "java.y" /* yacc.c:1646  */
     { (yyval.a) = (yyvsp[0].a) ;}
-#line 1422 "java.tab.c" /* yacc.c:1646  */
+#line 1421 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 106 "java.y" /* yacc.c:1646  */
+#line 105 "java.y" /* yacc.c:1646  */
     {(yyval.a) = newast('L',(yyvsp[0].a),NULL);}
-#line 1428 "java.tab.c" /* yacc.c:1646  */
+#line 1427 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 107 "java.y" /* yacc.c:1646  */
+#line 106 "java.y" /* yacc.c:1646  */
     {(yyval.a) = newast('L',(yyvsp[-2].a),(yyvsp[0].a));}
-#line 1434 "java.tab.c" /* yacc.c:1646  */
+#line 1433 "java.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1438 "java.tab.c" /* yacc.c:1646  */
+#line 1437 "java.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1662,5 +1661,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 111 "java.y" /* yacc.c:1906  */
+#line 110 "java.y" /* yacc.c:1906  */
 

@@ -76,7 +76,7 @@ E : E '+' E {$$ = newast('+',$1,$3);}
   | E '/' E {$$ = newast('/',$1,$3);}
   | '(' E ')' { $$ = $2 ;  }
   | NUMBER { $$ = newnum($1);}
-  | NAME    { printf("found : %s\n",$1->name) ;  $$ = newref($1);}
+  | NAME    { $$ = newref($1);}
   ;
 
 /* add not and AND oR */
@@ -84,8 +84,7 @@ cond : E CMP E {$$ = newcmp($2,$1,$3);}
     ;
 
 func_def : MODIFIER TYPE NAME '(' vars ')' '{' list '}' {
-  printf("defining a new function %s end \n",$3->name);
-  //def_func($3,$5,$8);
+  def_func($3,$5,$8);
 }
   ;
 
@@ -93,8 +92,8 @@ vars : { $$ = NULL ; }
   | var_list 
   ;
 
-var_list : TYPE NAME { /*$$ = newsymlist($2,NULL);*/}
-  | TYPE NAME ',' var_list { /*$$ = newsymlist($2,$4);*/ }
+var_list : TYPE NAME { $$ = newsymlist($2,NULL);}
+  | TYPE NAME ',' var_list { $$ = newsymlist($2,$4); }
   ; 
 
 func_call : NAME '(' args ')' { $$ = newfunc($1,$3); } /* function call*/

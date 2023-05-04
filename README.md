@@ -2,4 +2,8 @@
 * evaluate arithmetic expressions 
 * if else statements 
 * assigning named variables 
-* comparaison expressions 
+* comparison expressions 
+
+## semantic analysis 
+* checking multiply defined variables 
+* checking usage of undeclared variables 
