@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "symtab.h"
 
 void yyerror(char*s, ...);

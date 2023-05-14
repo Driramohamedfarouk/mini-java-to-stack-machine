@@ -1,9 +1,10 @@
 %{
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "declarations.h" 
 #include "symtab.h"
 #include "semantic.h"
+#include "codeGen.h"
 %}
 
 /*
@@ -41,7 +42,7 @@ int fn ; /* which comparaison operator */
 %%
 
 program : 
-  | CLASS NAME '{' list '}' { struct ast * res = $4 ;/* print_ast(res,0);*/ }
+  | CLASS NAME '{' list '}' { struct ast * res = $4 ; print_ast(res,0); codeGen(res);  }
   ;
 
 
@@ -67,7 +68,7 @@ assignment : NAME '=' E { undeclared_id($1->name) ; $$ = newasgn($1,$3);}
            ;
 
 declaration : TYPE  NAME { check_multiply_declared_id($2->name) ; $$ = newasgn($2,NULL);}
-            | TYPE  NAME '=' E {check_multiply_declared_id($2->name) ;$$ = newasgn($2,$4);}
+            | TYPE  NAME '=' E { printf("declaration\n"); check_multiply_declared_id($2->name) ;$$ = newasgn($2,$4);}
             ;
 
 E : E '+' E {$$ = newast('+',$1,$3);}

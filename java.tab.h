@@ -63,7 +63,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 17 "java.y" /* yacc.c:1909  */
+#line 18 "java.y" /* yacc.c:1909  */
 
 struct ast* a ; 
 double d ; 

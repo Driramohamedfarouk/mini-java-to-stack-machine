@@ -3,6 +3,7 @@
 #include <stdarg.h> 
 #include "declarations.h"
 #include "symtab.h"
+#include "codeGen.h"
 
 struct ast* newast(int nodetype, struct ast *l, struct ast *r){
 	struct ast *a = malloc(sizeof(struct ast));
@@ -257,7 +258,9 @@ int main(int argc, char* argv[]) {
   }
   yyin = fp;
   yyparse();
-  print_symtab();	
+  print_symtab();
+  printf("\n");
+  print_machine_code();
   fclose(fp);
   
   return 0;
