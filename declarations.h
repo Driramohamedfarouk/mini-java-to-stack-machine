@@ -31,7 +31,7 @@ struct symref {
 /* the node representing a variable assignment  */
 struct symasgn{
 	int nodetype ; /* type = */
-	struct symbol *s; 
+	struct symbol *s;
 	struct ast *a ; 
 };
 

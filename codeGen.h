@@ -5,7 +5,7 @@
 #define APPEL "APPEL"
 #define ENTREE "ENTREE"
 #define SORTIE "SORTIE"
-#define RETOUR "RETOUR"
+#define RETOUR "RETURN"
 #define ADD "ADD"
 #define MUL "MUL"
 #define DIV "DIV"
@@ -16,6 +16,9 @@
 #define SUPE "SUPE"
 #define DIF "DIF"
 #define EGAL "EGAL"
+#define IFNOT "IFNOT"
+#define JUMP "JUMP"
+
 
 /********************************************************
  *  INSTRUCTION SET OF THE STACK MACHINE

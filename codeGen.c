@@ -5,6 +5,7 @@
 
 // stack pointer
 int instructionNb = 0  ;
+// const int *pIns = &instructionNb;
 
 void codeGen(struct ast* a){
     if(!a){
@@ -35,16 +36,21 @@ void codeGen(struct ast* a){
             codeGen(newref(((struct symasgn*)a)->s));
             codeGen(((struct symasgn*)a)->a);
             i->code_op = STORE ;
-            i->operand = newref(((struct symasgn*)a)->s) ;
+            // lookup not new ref
+            i->operand = ((struct symasgn*)a)->s ;
             machine_code[instructionNb++] = *i ;
-            return ;
             break ;
         case '+' :
             codeGen(a->l) ;
             codeGen(a->r) ;
             i->code_op = ADD;
             machine_code[instructionNb++] = *i ;
-            return;
+            break ;
+        case '-' :
+            codeGen(a->l) ;
+            codeGen(a->r) ;
+            i->code_op = SUB;
+            machine_code[instructionNb++] = *i ;
             break ;
         case '*' :
             codeGen(a->l) ;
@@ -58,15 +64,85 @@ void codeGen(struct ast* a){
             i->code_op = DIV;
             machine_code[instructionNb++] = *i ;
             break ;
+        case 'W' :
+            /*
+            int alpha = instructionNb , beta = 0 ;
+            codeGen(((struct flow*)a)->cond);
+            beta = instructionNb ;
+            // possible temporary instruction malloc + free
+            // add IFNOT beta to machine code
+            codeGen(((struct flow*)a)->thenb);
+            // add JUMP to alpha
+            // update beta value ( keep a pointer on beta for example )
+            machine_code[beta].operand = instructionNb ; /* or ++ */
+            break;
+
+        /* comparaison  */
+            /*>*/
+        case '1':
+            codeGen(a->l) ;
+            codeGen(a->r) ;
+            i->code_op = SUP;
+            machine_code[instructionNb++] = *i ;
+            break ;
+            /*<*/
+        case '2':
+            codeGen(a->l) ;
+            codeGen(a->r) ;
+            i->code_op = INF;
+            machine_code[instructionNb++] = *i ;
+            break ;
+            /*!=*/
+        case '3':
+            codeGen(a->l) ;
+            codeGen(a->r) ;
+            i->code_op = DIF;
+            machine_code[instructionNb++] = *i ;
+            break ;
+            /*==*/
+        case '4':
+            codeGen(a->l) ;
+            codeGen(a->r) ;
+            i->code_op = EGAL;
+            machine_code[instructionNb++] = *i ;
+            break ;
+            /*>=*/
+        case '5':
+            codeGen(a->l) ;
+            codeGen(a->r) ;
+            i->code_op = SUPE;
+            machine_code[instructionNb++] = *i ;
+            break ;
+            /*<=*/
+        case '6':
+            codeGen(a->l) ;
+            codeGen(a->r) ;
+            i->code_op = INFE;
+            machine_code[instructionNb++] = *i ;
+            break ;
+        case 'I' :
+            // separate cases when there is a then branch and where there is not
+            codeGen(((struct flow*)a)->cond);
+            int alpha = instructionNb;
+            struct instruct *j = malloc(sizeof(struct instruct));
+            if(!j){
+                yyerror("out of space") ;
+            }
+            j->code_op=IFNOT;
+            j->operand = 0 ;
+            machine_code[alpha] = *j ;
+            instructionNb++;
+            codeGen(((struct flow*)a)->thenb);
+            machine_code[alpha].operand=instructionNb+1 ;
+            if(((struct flow*)a)->thenb){
+                codeGen(((struct flow*)a)->thenb);
+            }
+            return ;
+            break ;
         case 'C' :
             i->code_op = APPEL ;
             //i->fct_name  = ((struct func*)a)->s->name ;
             machine_code[instructionNb++] = *i ;
-            break ;
-        case 'I' :
-            codeGen(((struct flow*)a)->cond);
-            machine_code[instructionNb++] = *i ;
-            return ;
             break ;
         default:
             printf("\n");
