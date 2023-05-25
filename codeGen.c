@@ -1,6 +1,7 @@
 #include "codeGen.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "declarations.h"
 
 // stack pointer
@@ -122,21 +123,26 @@ void codeGen(struct ast* a){
             break ;
         case 'I' :
             // separate cases when there is a then branch and where there is not
+            printf(">>>> %d", instructionNb);
             codeGen(((struct flow*)a)->cond);
             int alpha = instructionNb;
+            printf(">>>> alpha %d", alpha);
             struct instruct *j = malloc(sizeof(struct instruct));
             if(!j){
                 yyerror("out of space") ;
             }
             j->code_op=IFNOT;
-            j->operand = 0 ;
+            j->operand = 7 ;
             machine_code[alpha] = *j ;
             instructionNb++;
             codeGen(((struct flow*)a)->thenb);
-            machine_code[alpha].operand=instructionNb+1 ;
-            if(((struct flow*)a)->thenb){
-                codeGen(((struct flow*)a)->thenb);
+            printf(">>>> before else %d", instructionNb);
+            j->operand = instructionNb ;
+            machine_code[alpha]=*j ;
+            if(((struct flow*)a)->elseb){
+                codeGen(((struct flow*)a)->elseb);
             }
+            printf(">>>> %d", instructionNb);
             return ;
             break ;
         case 'C' :
@@ -154,6 +160,14 @@ void codeGen(struct ast* a){
 
 void print_machine_code(){
     for (int j = 0; j < instructionNb; ++j) {
-        printf("%d : %s %x\n",j,machine_code[j].code_op,machine_code[j].operand);
+        // TODO : format output with switch
+        char *code =  machine_code[j].code_op ;
+        if( strcmp(code,ADD)==0 || strcmp(code,SUB)==0 || strcmp(code,INF)==0 || strcmp(code,SUP)==0 ){
+            printf("%d : %s\n",j,machine_code[j].code_op);
+        }else if (strcmp(code,IFNOT)==0) {
+            printf("%d : %s %d\n",j,machine_code[j].code_op,machine_code[j].operand);
+        }else{
+            printf("%d : %s %x\n",j,machine_code[j].code_op,machine_code[j].operand);
+        }
     }
 }
