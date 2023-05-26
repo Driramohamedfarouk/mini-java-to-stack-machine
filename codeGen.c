@@ -1,7 +1,7 @@
-#include "codeGen.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "codeGen.h"
 #include "declarations.h"
 #include "symtab.h"
 
@@ -10,6 +10,9 @@ int instructionNb = 0 ;
 
 int nb_of_called_func = 0 ;
 
+int alpha = 0 , beta = 0  ;
+
+// TODO : refactor allocation of struct instruction to a function
 
 void codeGen(struct ast* a){
     if(!a){
@@ -37,7 +40,7 @@ void codeGen(struct ast* a){
             return ;
             break ;
         case '=' :
-            codeGen(newref(((struct symasgn*)a)->s));
+            codeGen(newref(((struct symasgn*)a)->s)); // TODO : check possible error
             codeGen(((struct symasgn*)a)->a);
             i->code_op = STORE ;
             // lookup not new ref
@@ -68,20 +71,8 @@ void codeGen(struct ast* a){
             i->code_op = DIV;
             machine_code[instructionNb++] = *i ;
             break ;
-        case 'W' :
-            /*
-            int alpha = instructionNb , beta = 0 ;
-            codeGen(((struct flow*)a)->cond);
-            beta = instructionNb ;
-            // possible temporary instruction malloc + free
-            // add IFNOT beta to machine code
-            codeGen(((struct flow*)a)->thenb);
-            // add JUMP to alpha
-            // update beta value ( keep a pointer on beta for example )
-            machine_code[beta].operand = instructionNb ; /* or ++ */
-            break;
 
-        /* comparaison  */
+        /* comparison  */
             /*>*/
         case '1':
             codeGen(a->l) ;
@@ -124,18 +115,39 @@ void codeGen(struct ast* a){
             i->code_op = INFE;
             machine_code[instructionNb++] = *i ;
             break ;
+        case 'W' :
+            alpha = instructionNb ;
+            codeGen(((struct flow*)a)->cond);
+            beta = instructionNb ;
+            struct instruct *m = malloc(sizeof(struct instruct));
+            if(!m){
+                yyerror("out of space") ;
+            }
+            m->code_op=IFNOT;
+            m->operand = 0 ;
+            machine_code[beta] = *m ;
+            instructionNb++;
+            codeGen(((struct flow*)a)->thenb);
+            struct instruct *n = malloc(sizeof(struct instruct));
+            if(!n){
+                yyerror("out of space") ;
+            }
+            n->code_op = JUMP ;
+            n->operand = alpha ;
+            machine_code[instructionNb++] = *n ;
+            machine_code[beta].operand = instructionNb ;
+            break ;
         case 'I' :
             // separate cases when there is a then branch and where there is not
-            printf(">>>> %d", instructionNb);
             codeGen(((struct flow*)a)->cond);
-            int alpha = instructionNb;
+            alpha = instructionNb;
             printf(">>>> alpha %d", alpha);
             struct instruct *j = malloc(sizeof(struct instruct));
             if(!j){
                 yyerror("out of space") ;
             }
             j->code_op=IFNOT;
-            j->operand = 7 ;
+            j->operand = 0 ;
             machine_code[alpha] = *j ;
             instructionNb++;
             codeGen(((struct flow*)a)->thenb);
@@ -145,12 +157,11 @@ void codeGen(struct ast* a){
             if(((struct flow*)a)->elseb){
                 codeGen(((struct flow*)a)->elseb);
             }
-            printf(">>>> %d", instructionNb);
             return ;
             break ;
         case 'C' :
+            printf("");
             // allocate one memory word for function result
-            printf(">>>> %d", instructionNb);
             struct instruct *k = malloc(sizeof(struct instruct));
             if(!k){
                 yyerror("out of space") ;
@@ -160,16 +171,11 @@ void codeGen(struct ast* a){
             machine_code[instructionNb++] = *k ;
             // add function params
             codeGen(((struct func *)a)->l);
-            // store the value of the instruction number in an array
-            // CALL alpha
-            // alpha calculated after
             i->code_op = CALL ;
             i->operand = 0 ;
-            //i->fct_name  = ((struct func*)a)->s->name ;
             addresses[nb_of_called_func] = instructionNb ;
             func_bodies[nb_of_called_func] = (((struct func *)a)->s)->func ;
             machine_code[instructionNb++] = *i ;
-            //printf("%s\n",(((struct func *)a)->s)->name);
             nb_of_called_func++ ;
             break ;
         default:
@@ -198,6 +204,10 @@ void print_machine_code(){
 }
 
 
+/*
+ * this method generates machine code for functions
+ * and update the instruction nb from witch they are called
+ * */
 void add_function_bodies(){
     struct instruct *l = malloc(sizeof(struct instruct));
     if(!l){
