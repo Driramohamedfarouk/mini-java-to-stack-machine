@@ -47,7 +47,6 @@ EXP ([Ee][-+]?[0-9]+)
 "boolean" { return TYPE ; }
 
 
-
 [a-zA-Z][a-zA-Z0-9]* { yylval.s = new_symbol(yytext) ; return NAME; }
 
 [0-9]+"."[0-9]*{EXP}? |

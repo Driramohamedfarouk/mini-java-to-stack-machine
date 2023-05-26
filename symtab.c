@@ -22,7 +22,9 @@ struct symbol *lookup(char* sym) {
     int scount = SYM_TAB_SIZE ;
     while (--scount>=0){
         /* if the symbol already exists */
-        if(sp->name&& !strcmp(sp->name,sym)) return sp ;
+        if(sp->name&& !strcmp(sp->name,sym)) {
+            yyerror("variable %s already declared \n",sym);
+        }
         /* if there is an empty slot */
         if(!sp->name){
             sp->name = strdup(sym);
@@ -38,12 +40,14 @@ struct symbol *lookup(char* sym) {
     abort();
 };
 
-
-int exists(char* sym) {
+// TODO : this method is incomplete
+/* assume there will be no collision  */
+struct symbol* exists(char* sym) {
     struct symbol *sp = &symbol_table[symhash(sym)%SYM_TAB_SIZE];
     /* if the symbol already exists */
-    if(sp->name&& !strcmp(sp->name,sym)) return 1 ;
-    return 0 ; 
+    if(sp->name&& !strcmp(sp->name,sym)) return sp ;
+    yyerror("use of undeclared variable\n",sym);
+    return NULL ;
 };
 
 /* should only be called after checking that the symbol does not exist already */
@@ -93,11 +97,10 @@ void symlistfree(struct symlist *sl) {
 
 
 void def_func(struct symbol *name,struct symlist *syms,struct ast *stmts){
-    check_multiply_declared_id(name->name);
 	if(name->func) treefree(name->func);
 	if (name->syms) symlistfree(name->syms);
 	name->func = stmts ; 
-	name->syms	= syms ; 
+	name->syms	= syms ;
 }
 
 struct symbol *new_symbol(char *name){
@@ -115,7 +118,9 @@ struct symbol *new_symbol(char *name){
 
 
 void print_symtab(){
-  printf("\n");	
+  printf("\n*****************************************");
+  printf("\n               SYMBOL TABLE              ");
+  printf("\n*****************************************\n");
   for (int i = 0; i < SYM_TAB_SIZE; i++) {
 	if (symbol_table[i].name)
 	{

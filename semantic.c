@@ -2,19 +2,11 @@
 
 void yyerror(char*s, ...);
 
-
-int check_multiply_declared_id(char *name){
-    if(exists(name)){
-        yyerror("variable %s already declared \n",name);
-    }else{
-        insert(name);
-    }
-    return  0 ;
+// create it if it does not exist and return it, otherwise raise error
+struct symbol* check_multiply_declared_id(char *name){
+    return lookup(name) ;
 }
-
-int undeclared_id(char *name){
-    if(!exists(name)){
-        yyerror("use of undeclared variable\n",name);
-    }
-    return 0 ;
+// fail if undeclared otherwise return it
+struct symbol* undeclared_id(char *name){
+    return exists(name) ;
 }

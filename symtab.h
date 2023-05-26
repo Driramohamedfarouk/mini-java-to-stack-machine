@@ -21,7 +21,7 @@ struct symlist
 struct symbol symbol_table[SYM_TAB_SIZE];
 
 struct symbol *lookup(char*);
-int exists(char* sym);
+struct symbol * exists(char* sym);
 struct symbol *insert(char *sym);
 
 struct symlist *newsymlist(struct symbol *sym, struct symlist *next);

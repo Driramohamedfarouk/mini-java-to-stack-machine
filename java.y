@@ -41,8 +41,9 @@ int fn ; /* which comparaison operator */
 
 %%
 
+// TODO : add print all functions after code Gen
 program : 
-  | CLASS NAME '{' list '}' { struct ast * res = $4 ; print_ast(res,0); codeGen(res);  }
+  | CLASS NAME '{' list '}' { struct ast * res = $4 ; codeGen(res);  }
   ;
 
 
@@ -64,11 +65,11 @@ list : { $$ = NULL; }
   | func_def list { $$ = $2 ; }
   ;
 
-assignment : NAME '=' E { undeclared_id($1->name) ; $$ = newasgn($1,$3);}
+assignment : NAME '=' E { $$ = newasgn(undeclared_id($1->name),$3);}
            ;
 
-declaration : TYPE  NAME { check_multiply_declared_id($2->name) ; $$ = newasgn($2,NULL);}
-            | TYPE  NAME '=' E { printf("declaration\n"); check_multiply_declared_id($2->name) ;$$ = newasgn($2,$4);}
+declaration : TYPE  NAME { $$ = newasgn(check_multiply_declared_id($2->name),NULL);}
+            | TYPE  NAME '=' E { $$ = newasgn(check_multiply_declared_id($2->name),$4);}
             ;
 
 E : E '+' E {$$ = newast('+',$1,$3);}
@@ -77,7 +78,7 @@ E : E '+' E {$$ = newast('+',$1,$3);}
   | E '/' E {$$ = newast('/',$1,$3);}
   | '(' E ')' { $$ = $2 ;  }
   | NUMBER { $$ = newnum($1);}
-  | NAME    { $$ = newref($1);}
+  | NAME    { $$ = newref(undeclared_id($1->name));}
   ;
 
 /* add not and AND oR */
@@ -85,10 +86,11 @@ cond : E CMP E {$$ = newcmp($2,$1,$3);}
     ;
 
 func_def : MODIFIER TYPE NAME '(' vars ')' '{' list '}' {
-  def_func($3,$5,$8);
+  def_func(check_multiply_declared_id($3->name),$5,$8);
 }
   ;
 
+// TODO : make vars return a linked list of symbol tables
 vars : { $$ = NULL ; }
   | var_list 
   ;
@@ -97,12 +99,13 @@ var_list : TYPE NAME { $$ = newsymlist($2,NULL);}
   | TYPE NAME ',' var_list { $$ = newsymlist($2,$4); }
   ; 
 
-func_call : NAME '(' args ')' { $$ = newfunc($1,$3); } /* function call*/
+func_call : NAME '(' args ')' { $$ = newfunc(undeclared_id($1->name),$3); } /* function call*/
   ;
 
 args : { $$ = NULL; }
   | list_arg { $$ = $1 ;} /*default */
   ;
+
 list_arg : E  {$$ = newast('L',$1,NULL);} 
   | E ',' list_arg {$$ = newast('L',$1,$3);}
   ;

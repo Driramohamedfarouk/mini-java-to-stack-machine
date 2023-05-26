@@ -2,8 +2,8 @@
 #define LDC "LDC"
 #define LDV "LDV"
 #define STORE "STORE"
-#define APPEL "APPEL"
-#define ENTREE "ENTREE"
+#define CALL "CALL"
+#define ENTER "ENTER"
 #define SORTIE "SORTIE"
 #define RETOUR "RETURN"
 #define ADD "ADD"
@@ -15,10 +15,15 @@
 #define SUP  "SUP"
 #define SUPE "SUPE"
 #define DIF "DIF"
-#define EGAL "EGAL"
+#define EQ "EQ"
 #define IFNOT "IFNOT"
 #define JUMP "JUMP"
+#define ALLOCATE "ALLOCATE"
 
+
+#define MAX_FUNCTION_CALLS 300
+
+//TODO : explain what each instruction set do
 
 /********************************************************
  *  INSTRUCTION SET OF THE STACK MACHINE
@@ -54,6 +59,10 @@ struct instruct {
 
 struct instruct machine_code[PROGRAM_LENGTH] ;
 
+
+// global variable containing functions to call and from what line did we call it
+int addresses[MAX_FUNCTION_CALLS] ;
+//struct ast func_bodies[MAX_FUNCTION_CALLS];
 
 
 void codeGen(struct ast* );

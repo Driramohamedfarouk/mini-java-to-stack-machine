@@ -934,40 +934,40 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 51 "java.l"
+#line 50 "java.l"
 { yylval.s = new_symbol(yytext) ; return NAME; }
 	YY_BREAK
 case 32:
-#line 54 "java.l"
+#line 53 "java.l"
 case 33:
 YY_RULE_SETUP
-#line 54 "java.l"
+#line 53 "java.l"
 { yylval.d = atof(yytext); return NUMBER; }
 	YY_BREAK
 case 34:
 /* rule 34 can match eol */
 YY_RULE_SETUP
-#line 55 "java.l"
+#line 54 "java.l"
 
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 56 "java.l"
+#line 55 "java.l"
 
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 57 "java.l"
+#line 56 "java.l"
 
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 58 "java.l"
+#line 57 "java.l"
 { yyerror("Mystery character %c\n", *yytext); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 60 "java.l"
+#line 59 "java.l"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
 #line 974 "lex.yy.c"
@@ -1987,7 +1987,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 60 "java.l"
+#line 59 "java.l"
 
 
 

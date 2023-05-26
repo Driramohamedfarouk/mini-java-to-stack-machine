@@ -447,10 +447,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    44,    44,    45,    50,    51,    52,    53,    54,    55,
-      58,    59,    64,    67,    70,    71,    74,    75,    76,    77,
-      78,    79,    80,    84,    87,    92,    93,    96,    97,   100,
-     103,   104,   106,   107
+       0,    45,    45,    46,    51,    52,    53,    54,    55,    56,
+      59,    60,    65,    68,    71,    72,    75,    76,    77,    78,
+      79,    80,    81,    85,    88,    94,    95,    98,    99,   102,
+     105,   106,   109,   110
 };
 #endif
 
@@ -1266,37 +1266,37 @@ yyreduce:
   switch (yyn)
     {
         case 3:
-#line 45 "java.y" /* yacc.c:1646  */
-    { struct ast * res = (yyvsp[-1].a) ; print_ast(res,0); codeGen(res);  }
+#line 46 "java.y" /* yacc.c:1646  */
+    { struct ast * res = (yyvsp[-1].a) ; codeGen(res);  }
 #line 1272 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 50 "java.y" /* yacc.c:1646  */
+#line 51 "java.y" /* yacc.c:1646  */
     {(yyval.a) = newflow('I',(yyvsp[-4].a),(yyvsp[-1].a),NULL); }
 #line 1278 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 51 "java.y" /* yacc.c:1646  */
+#line 52 "java.y" /* yacc.c:1646  */
     {(yyval.a) = newflow('I',(yyvsp[-8].a),(yyvsp[-5].a),(yyvsp[-1].a));}
 #line 1284 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 52 "java.y" /* yacc.c:1646  */
+#line 53 "java.y" /* yacc.c:1646  */
     {(yyval.a) = newflow('W',(yyvsp[-4].a),(yyvsp[-1].a),NULL);}
 #line 1290 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 58 "java.y" /* yacc.c:1646  */
+#line 59 "java.y" /* yacc.c:1646  */
     { (yyval.a) = NULL; }
 #line 1296 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 59 "java.y" /* yacc.c:1646  */
+#line 60 "java.y" /* yacc.c:1646  */
     { if((yyvsp[0].a)==NULL)
                       (yyval.a) = (yyvsp[-1].a);
                     else 
@@ -1306,129 +1306,129 @@ yyreduce:
     break;
 
   case 12:
-#line 64 "java.y" /* yacc.c:1646  */
+#line 65 "java.y" /* yacc.c:1646  */
     { (yyval.a) = (yyvsp[0].a) ; }
 #line 1312 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 67 "java.y" /* yacc.c:1646  */
-    { undeclared_id((yyvsp[-2].s)->name) ; (yyval.a) = newasgn((yyvsp[-2].s),(yyvsp[0].a));}
+#line 68 "java.y" /* yacc.c:1646  */
+    { (yyval.a) = newasgn(undeclared_id((yyvsp[-2].s)->name),(yyvsp[0].a));}
 #line 1318 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 70 "java.y" /* yacc.c:1646  */
-    { check_multiply_declared_id((yyvsp[0].s)->name) ; (yyval.a) = newasgn((yyvsp[0].s),NULL);}
+#line 71 "java.y" /* yacc.c:1646  */
+    { (yyval.a) = newasgn(check_multiply_declared_id((yyvsp[0].s)->name),NULL);}
 #line 1324 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 71 "java.y" /* yacc.c:1646  */
-    { printf("declaration\n"); check_multiply_declared_id((yyvsp[-2].s)->name) ;(yyval.a) = newasgn((yyvsp[-2].s),(yyvsp[0].a));}
+#line 72 "java.y" /* yacc.c:1646  */
+    { (yyval.a) = newasgn(check_multiply_declared_id((yyvsp[-2].s)->name),(yyvsp[0].a));}
 #line 1330 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 74 "java.y" /* yacc.c:1646  */
+#line 75 "java.y" /* yacc.c:1646  */
     {(yyval.a) = newast('+',(yyvsp[-2].a),(yyvsp[0].a));}
 #line 1336 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 75 "java.y" /* yacc.c:1646  */
+#line 76 "java.y" /* yacc.c:1646  */
     {(yyval.a) = newast('-',(yyvsp[-2].a),(yyvsp[0].a));}
 #line 1342 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 76 "java.y" /* yacc.c:1646  */
+#line 77 "java.y" /* yacc.c:1646  */
     {(yyval.a) = newast('*',(yyvsp[-2].a),(yyvsp[0].a));}
 #line 1348 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 77 "java.y" /* yacc.c:1646  */
+#line 78 "java.y" /* yacc.c:1646  */
     {(yyval.a) = newast('/',(yyvsp[-2].a),(yyvsp[0].a));}
 #line 1354 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 78 "java.y" /* yacc.c:1646  */
+#line 79 "java.y" /* yacc.c:1646  */
     { (yyval.a) = (yyvsp[-1].a) ;  }
 #line 1360 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 79 "java.y" /* yacc.c:1646  */
+#line 80 "java.y" /* yacc.c:1646  */
     { (yyval.a) = newnum((yyvsp[0].d));}
 #line 1366 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 80 "java.y" /* yacc.c:1646  */
-    { (yyval.a) = newref((yyvsp[0].s));}
+#line 81 "java.y" /* yacc.c:1646  */
+    { (yyval.a) = newref(undeclared_id((yyvsp[0].s)->name));}
 #line 1372 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 84 "java.y" /* yacc.c:1646  */
+#line 85 "java.y" /* yacc.c:1646  */
     {(yyval.a) = newcmp((yyvsp[-1].fn),(yyvsp[-2].a),(yyvsp[0].a));}
 #line 1378 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 87 "java.y" /* yacc.c:1646  */
+#line 88 "java.y" /* yacc.c:1646  */
     {
-  def_func((yyvsp[-6].s),(yyvsp[-4].sl),(yyvsp[-1].a));
+  def_func(check_multiply_declared_id((yyvsp[-6].s)->name),(yyvsp[-4].sl),(yyvsp[-1].a));
 }
 #line 1386 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 92 "java.y" /* yacc.c:1646  */
+#line 94 "java.y" /* yacc.c:1646  */
     { (yyval.sl) = NULL ; }
 #line 1392 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 96 "java.y" /* yacc.c:1646  */
+#line 98 "java.y" /* yacc.c:1646  */
     { (yyval.sl) = newsymlist((yyvsp[0].s),NULL);}
 #line 1398 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 97 "java.y" /* yacc.c:1646  */
+#line 99 "java.y" /* yacc.c:1646  */
     { (yyval.sl) = newsymlist((yyvsp[-2].s),(yyvsp[0].sl)); }
 #line 1404 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 100 "java.y" /* yacc.c:1646  */
-    { (yyval.a) = newfunc((yyvsp[-3].s),(yyvsp[-1].a)); }
+#line 102 "java.y" /* yacc.c:1646  */
+    { (yyval.a) = newfunc(undeclared_id((yyvsp[-3].s)->name),(yyvsp[-1].a)); }
 #line 1410 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 103 "java.y" /* yacc.c:1646  */
+#line 105 "java.y" /* yacc.c:1646  */
     { (yyval.a) = NULL; }
 #line 1416 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 104 "java.y" /* yacc.c:1646  */
+#line 106 "java.y" /* yacc.c:1646  */
     { (yyval.a) = (yyvsp[0].a) ;}
 #line 1422 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 106 "java.y" /* yacc.c:1646  */
+#line 109 "java.y" /* yacc.c:1646  */
     {(yyval.a) = newast('L',(yyvsp[0].a),NULL);}
 #line 1428 "java.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 107 "java.y" /* yacc.c:1646  */
+#line 110 "java.y" /* yacc.c:1646  */
     {(yyval.a) = newast('L',(yyvsp[-2].a),(yyvsp[0].a));}
 #line 1434 "java.tab.c" /* yacc.c:1646  */
     break;
@@ -1662,5 +1662,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 111 "java.y" /* yacc.c:1906  */
+#line 114 "java.y" /* yacc.c:1906  */
 

@@ -11,7 +11,7 @@ struct ast {
 };
 
 struct numval {
-	int nodetype ; 
+	int nodetype ; /* type K */
 	double value ;
 };
 
@@ -37,8 +37,8 @@ struct symasgn{
 
 struct func {
 	int nodetype ; /* type C */
-	struct ast *l ; /* statements  */
-	struct symbol *s  ; /* list of arguments */
+	struct ast *l ; /* list of arguments   */
+	struct symbol *s  ; /* function symbol that contains func definition  */
 };
 
 
@@ -46,11 +46,8 @@ struct ast* newast(int nodetype, struct ast *l, struct ast *r);
 struct ast* newnum(double d);
 struct ast *newflow(int nodetype, struct ast *cond, struct ast *tl, struct ast *tr);
 struct ast *newcmp(int cmptype, struct ast *l, struct ast *r);
-
 struct ast *newref(struct symbol *s);
 struct ast *newasgn(struct symbol *s,struct ast *a);
-
-
 struct ast *newfunc(struct symbol *s,struct ast *l);
 
 

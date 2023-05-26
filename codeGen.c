@@ -3,10 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "declarations.h"
+#include "symtab.h"
 
-// stack pointer
+
 int instructionNb = 0  ;
-// const int *pIns = &instructionNb;
+
 
 void codeGen(struct ast* a){
     if(!a){
@@ -104,7 +105,7 @@ void codeGen(struct ast* a){
         case '4':
             codeGen(a->l) ;
             codeGen(a->r) ;
-            i->code_op = EGAL;
+            i->code_op = EQ;
             machine_code[instructionNb++] = *i ;
             break ;
             /*>=*/
@@ -146,9 +147,27 @@ void codeGen(struct ast* a){
             return ;
             break ;
         case 'C' :
-            i->code_op = APPEL ;
+            // allocate one memory word for function result
+            printf(">>>> %d", instructionNb);
+            struct instruct *k = malloc(sizeof(struct instruct));
+            if(!k){
+                yyerror("out of space") ;
+            }
+            k->code_op = ALLOCATE ;
+            k->operand = 1 ;
+            machine_code[instructionNb++] = *k ;
+            // add function params
+            codeGen(((struct func *)a)->l);
+            // store the value of the instruction number in an array
+
+            // CALL alpha
+            // alpha calculated after
+            i->code_op = CALL ;
+            i->operand = 0 ;
             //i->fct_name  = ((struct func*)a)->s->name ;
             machine_code[instructionNb++] = *i ;
+            //printf("%s\n",(((struct func *)a)->s)->name);
+            codeGen((((struct func *)a)->s)->func);
             break ;
         default:
             printf("\n");
