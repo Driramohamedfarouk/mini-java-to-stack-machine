@@ -1267,7 +1267,7 @@ yyreduce:
     {
         case 3:
 #line 46 "java.y" /* yacc.c:1646  */
-    { struct ast * res = (yyvsp[-1].a) ; codeGen(res);  }
+    { struct ast * res = (yyvsp[-1].a) ; codeGen(res); add_function_bodies();  }
 #line 1272 "java.tab.c" /* yacc.c:1646  */
     break;
 

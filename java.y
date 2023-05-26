@@ -43,7 +43,7 @@ int fn ; /* which comparaison operator */
 
 // TODO : add print all functions after code Gen
 program : 
-  | CLASS NAME '{' list '}' { struct ast * res = $4 ; codeGen(res);  }
+  | CLASS NAME '{' list '}' { struct ast * res = $4 ; codeGen(res); add_function_bodies();  }
   ;
 
 

@@ -6,7 +6,9 @@
 #include "symtab.h"
 
 
-int instructionNb = 0  ;
+int instructionNb = 0 ;
+
+int nb_of_called_func = 0 ;
 
 
 void codeGen(struct ast* a){
@@ -153,21 +155,22 @@ void codeGen(struct ast* a){
             if(!k){
                 yyerror("out of space") ;
             }
-            k->code_op = ALLOCATE ;
+            k->code_op = ALLOC ;
             k->operand = 1 ;
             machine_code[instructionNb++] = *k ;
             // add function params
             codeGen(((struct func *)a)->l);
             // store the value of the instruction number in an array
-
             // CALL alpha
             // alpha calculated after
             i->code_op = CALL ;
             i->operand = 0 ;
             //i->fct_name  = ((struct func*)a)->s->name ;
+            addresses[nb_of_called_func] = instructionNb ;
+            func_bodies[nb_of_called_func] = (((struct func *)a)->s)->func ;
             machine_code[instructionNb++] = *i ;
             //printf("%s\n",(((struct func *)a)->s)->name);
-            codeGen((((struct func *)a)->s)->func);
+            nb_of_called_func++ ;
             break ;
         default:
             printf("\n");
@@ -181,12 +184,43 @@ void print_machine_code(){
     for (int j = 0; j < instructionNb; ++j) {
         // TODO : format output with switch
         char *code =  machine_code[j].code_op ;
-        if( strcmp(code,ADD)==0 || strcmp(code,SUB)==0 || strcmp(code,INF)==0 || strcmp(code,SUP)==0 ){
+        if( strcmp(code,ADD)==0 || strcmp(code,SUB)==0 || strcmp(code,MUL)==0 || strcmp(code,DIV)==0 ||
+            strcmp(code,INFE)==0 || strcmp(code,SUPE)==0 || strcmp(code,INF)==0 || strcmp(code,SUP)==0 ||
+            strcmp(code,ENTER)==0 || strcmp(code,EXIT)==0 || strcmp(code,RTRN)==0
+        ){
             printf("%d : %s\n",j,machine_code[j].code_op);
-        }else if (strcmp(code,IFNOT)==0) {
+        }else if (strcmp(code,IFNOT)==0 || strcmp(code,CALL)==0) {
             printf("%d : %s %d\n",j,machine_code[j].code_op,machine_code[j].operand);
         }else{
             printf("%d : %s %x\n",j,machine_code[j].code_op,machine_code[j].operand);
+        }
+    }
+}
+
+
+void add_function_bodies(){
+    struct instruct *l = malloc(sizeof(struct instruct));
+    if(!l){
+        yyerror("out of space") ;
+    }
+    l->code_op = ENTER ;
+    struct instruct *j = malloc(sizeof(struct instruct));
+    if(!j){
+        yyerror("out of space") ;
+    }
+    j->code_op=EXIT ;
+    struct instruct *r = malloc(sizeof(struct instruct));
+    if(!r){
+        yyerror("out of space") ;
+    }
+    r->code_op=RTRN ;
+    for (int i = 0; i < MAX_FUNCTION_CALLS; ++i) {
+        if(addresses[i]){
+            machine_code[addresses[i]].operand = instructionNb ;
+            machine_code[instructionNb++] = *l ;
+            codeGen(func_bodies[i]);
+            machine_code[instructionNb++] = *j ;
+            machine_code[instructionNb++] = *r ;
         }
     }
 }

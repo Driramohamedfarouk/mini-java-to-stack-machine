@@ -7,6 +7,11 @@ class Main {
         int x1 = 0 ;
         z = x1+y ;
     }
+
+    public int start(){
+        z=z*2 ;
+    }
+
     if(x>5){
         z = x+5 ;
     }else{
@@ -14,4 +19,5 @@ class Main {
     }
     call(x,y,z);
     x = x+ 1 ;
+    start();
 }
