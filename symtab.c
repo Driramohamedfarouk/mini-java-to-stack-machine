@@ -127,5 +127,5 @@ void print_symtab(){
 		printf("%s  ",symbol_table[i].name) ;	
 	}	
   }
-  printf("\n");
+  printf("\n*****************************************\n");
 }

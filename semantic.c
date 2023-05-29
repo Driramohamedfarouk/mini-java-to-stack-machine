@@ -2,6 +2,8 @@
 
 void yyerror(char*s, ...);
 
+// TODO : rename with meaningful names
+
 // create it if it does not exist and return it, otherwise raise error
 struct symbol* check_multiply_declared_id(char *name){
     return lookup(name) ;

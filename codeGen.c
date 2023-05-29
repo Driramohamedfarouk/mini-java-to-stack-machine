@@ -151,12 +151,20 @@ void codeGen(struct ast* a){
             machine_code[alpha] = *j ;
             instructionNb++;
             codeGen(((struct flow*)a)->thenb);
-            printf(">>>> before else %d", instructionNb);
-            j->operand = instructionNb ;
-            machine_code[alpha]=*j ;
-            if(((struct flow*)a)->elseb){
+            machine_code[alpha].operand = instructionNb ;
+            if(((struct flow*)a)->elseb) {
+                beta = instructionNb ;
                 codeGen(((struct flow*)a)->elseb);
+                struct instruct *o = malloc(sizeof(struct instruct));
+                if(!o){
+                    yyerror("out of space") ;
+                }
+                o->code_op = JUMP ;
+                o->operand = 0 ;
+                machine_code[instructionNb++] = *o ;
+                machine_code[beta].operand = instructionNb ;
             }
+
             return ;
             break ;
         case 'C' :
